@@ -18,6 +18,29 @@ const db = mysql.createConnection(
     console.log("connected to the employer_db database.")
 );
 
+
+function Questions(){
+    inquirer.prompt(
+        [
+            {
+                type: "list",
+                name:"Questions",
+                message: "what would you like to do?"
+                choices: [""]
+            }
+        ]
+
+    )
+    .then(answers=> {
+        let choice = answer.Question;
+
+        if (choice === "VeiwEmployee"){
+            //call a function 
+        }
+    })
+}
+
+
 function veiwDepartments() {
     db.query("Select * FROM department", 
     function(err, res) {
@@ -28,17 +51,17 @@ function veiwDepartments() {
         
     })
 }
-veiwDepartments();
+//veiwDepartments();
 
 function veiwRole() {
-    db.query("Select * FROM role",
+    db.query("Select * FROM role_table",
     function(err, res){
         if(err) throw err;
 
         console.table(res);
     })
 }
-veiwRole();
+//veiwRole();
 
 function VeiwEmployee() {
     db.query("select * FROM employee",
@@ -48,7 +71,7 @@ function VeiwEmployee() {
         console.table(res);
     })
 }
-VeiwEmployee();
+//VeiwEmployee();
 // this adds a new function when asked 
 function addDepartment() {
     inquirer.prompt(
@@ -172,3 +195,43 @@ function addEmployee() {
         console.log(query.sql);
     })
 }
+
+
+
+function updateEmployee() {
+    //VeiwEmployee();
+    inquirer.prompt(
+        [
+            {
+                type: "input",
+                name: "lastName",
+                message: "what is the last name of the employee?"   
+            },
+            {
+                type: "input",
+                name: "roleID",
+                message: "what is the new employee ID?", 
+            },
+        ]
+    )
+    .then(answers=> {
+
+   
+
+    let quesry = db.query(
+
+
+    "UPDATE employee SET ? WHERE ?",
+        [
+            {
+                role_id: answers.roleID
+            },
+
+            {
+                last_name: answers.lastName
+            }
+        ]
+    ) 
+})
+}
+updateEmployee();
