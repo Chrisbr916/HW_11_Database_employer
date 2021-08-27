@@ -30,6 +30,25 @@ function veiwDepartments() {
 }
 veiwDepartments();
 
+function veiwRole() {
+    db.query("Select * FROM role",
+    function(err, res){
+        if(err) throw err;
+
+        console.table(res);
+    })
+}
+veiwRole();
+
+function VeiwEmployee() {
+    db.query("select * FROM employee",
+    function(err, res){
+        if(err) throw err;
+
+        console.table(res);
+    })
+}
+VeiwEmployee();
 // this adds a new function when asked 
 function addDepartment() {
     inquirer.prompt(
@@ -47,7 +66,7 @@ function addDepartment() {
        let query = db.query(
         "INSERT INTO department SET ?",
         {
-          department_name: answers.add_new_dep
+          title: answers.add_new_dep
         },
         function(err, res) {
           if (err) throw err;
@@ -56,7 +75,100 @@ function addDepartment() {
     
       console.log(query.sql);
     })
-}
+};
+
 
 
 //addDepartment();
+
+function addRole() {
+    inquirer.prompt(
+        [
+            {
+                type: "input",
+                name: "add_new_role",
+                message: "what is the new role?",
+            },
+            {
+                type: "input",
+                name: "add_new_salary",
+                message: "what is the Salary?",
+            },
+            {
+                type: "input",
+                name: "add_new_dep",
+                message: "what is the department?",
+            },
+        ]
+    )
+    .then(answers=> {
+        let query = db.query(
+            "INSERT INTO role_table SET ?",
+            {
+                role_name: answers.add_new_role
+            },
+            {
+                salary: answers.add_new_salary
+            },
+            {
+                department: answers.add_new_dep
+            },
+            function(err, res){
+                if (err) throw err; 
+
+            }
+
+        );
+        console.log(query.sql);
+    })
+};
+
+function addEmployee() {
+    inquirer.prompt(
+        [
+            {
+                type: "input",
+                name: "add_new_FirstName",
+                message: "what is the employees first name?",
+            },
+            {
+                type: "input",
+                name: "add_new_LastName",
+                message: "what is the employees Last name?",
+            },
+            {
+                type: "input",
+                name: "add_new_role",
+                message: "what is the employees role?",
+            },
+            {
+                type: "input",
+                name: "add_new_manager",
+                message: "what is the employees manager ID?",
+            },
+            
+        ]
+    )
+    .then(answers=> {
+        let query = db.query(
+            "INSERT INTO employee SET ?",
+            {
+                first_name: answers.add_new_FirstName
+            },
+            {
+                last_name: answers.add_new_LastName
+            },
+            {
+                role_name: answers.add_new_role
+            },
+            {
+                manager_id: answers.add_new_managerID
+            },
+            function(err, res){
+                if (err)  throw err;
+
+            }
+        );
+        console.log(query.sql);
+    })
+}
